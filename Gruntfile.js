@@ -1,4 +1,3 @@
-
 'use strict';
 
 module.exports = function (grunt) {
@@ -91,19 +90,6 @@ module.exports = function (grunt) {
           dest: '<%= config.temp %>/fonts',
           src: '{,*/}*'
         }]
-      },
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= config.app %>',
-          dest: '<%= config.dist %>',
-          src: [
-            '{,*/}*.{ico,png,txt}',
-            '{,*/}*html'
-          ]
-        }]
-      }]
       }
     },
     // 清理工程目录
@@ -126,54 +112,10 @@ module.exports = function (grunt) {
         reporter: require('jshint-stylish')
       }
     },
-    uglify: {
-      dist: {
-        files: [
-//        {
-//          expand: true,
-//          dot: true,
-//          cwd: '<%= config.temp %>/scripts',
-//          dest: '<%= config.dist %>/scripts',
-//          src: ['{,*/}*.js']
-//        },
-        {
-          expand: true,
-          dot: true,
-          cwd: '<%= config.app %>/scripts',
-          dest: '<%= config.dist %>/scripts',
-          src: ['{,*/}*.js']
-        }]
-      }
-    },
-    htmlmin: {
-      build: {
-        options: {
-          removeComments: true,
-          removeCommentsFromCDATA: true,
-          collapseWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true
-        },
-        files: [{
-            expand: true,
-            cwd: '<%= config.app %>',
-            src: ['{,*/}*.html'],
-            dest: '<%= config.dist %>'
-          }]
-      }
-    },
     // 多线程任务
     concurrent: {
       server: [
-        'sass:server',
-        'copy:server',
-        'react:server'
-      ],
-      dist: [
-        'sass:dist',
-        'copy:styles',
-        'copy:dist'
+        'copy:server'
       ]
     }
   });
@@ -189,19 +131,10 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'concurrent:server',
-      'autoprefixer',
       'connect:livereload',
       'watch'
     ]);
   });
-
-  grunt.registerTask('build', [
-    'clean:dist',
-    'concurrent:dist',
-    'autoprefixer',
-    'cssmin',
-    'uglify'
-  ]);
 };
 
 // sign 需要为 bower_components 文件夹加更新监听（虽然一般不能改里面的东西）
