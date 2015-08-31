@@ -54,7 +54,6 @@ module.exports = function (grunt) {
             // 监控这两个目录
             return [
               connect.static(config.temp),
-              connect().use('/bower_components', connect.static('./bower_components')),
               connect.static(config.app)
             ];
           }
@@ -65,31 +64,6 @@ module.exports = function (grunt) {
           base: '<%= config.dist %>',
           livereload: false
         }
-      }
-    },
-    // server 情况下运行 server 任务，该任务只复制字体和 js 文件到 config.temp 目录
-    // 发布情况下全部执行，先将 css 文件复制到 config.temp 文件夹中
-    // 再复制字体和 js 文件到 config.temp 文件夹
-    // 最后将所有网页文件和字体文件从 config.temp 文件夹复制到 config.dist 文件夹
-    // Ps: css 文件和 js 文件通过 cssmin 和 uglify 压缩后放入 config.dist 文件夹中，此处无需插手
-    copy: {
-      styles: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= config.app %>/styles',
-          dest: '<%= config.temp %>/styles',
-          src: '{,*/}*.css'
-        }]
-      },
-      server: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: 'bower_components/bootstrap-sass/assets/fonts',
-          dest: '<%= config.temp %>/fonts',
-          src: '{,*/}*'
-        }]
       }
     },
     // 清理工程目录
@@ -111,12 +85,6 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish')
       }
-    },
-    // 多线程任务
-    concurrent: {
-      server: [
-        'copy:server'
-      ]
     }
   });
 
@@ -130,12 +98,8 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'concurrent:server',
       'connect:livereload',
       'watch'
     ]);
   });
 };
-
-// sign 需要为 bower_components 文件夹加更新监听（虽然一般不能改里面的东西）
-// sign 图片压缩不知道需要不需要
