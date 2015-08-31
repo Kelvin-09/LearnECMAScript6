@@ -19,7 +19,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint'],
+        tasks: ['babel'],
         options: {
           livereload: true
         }
@@ -85,6 +85,20 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish')
       }
+    },
+    babel: {
+      options: {
+        sourceMap: true
+      },
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= config.app %>/scripts',
+          dest: '<%= config.temp %>/scripts',
+          src: '{,*/}*.js'
+        }]
+      }
     }
   });
 
@@ -98,6 +112,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'babel',
       'connect:livereload',
       'watch'
     ]);
