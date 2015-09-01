@@ -1,5 +1,3 @@
-'use strict';
-
 // arrow function
 console.log('Arrow function:');
 console.log([1, 2, 3].map((x) => x * x));
@@ -106,3 +104,36 @@ function letFunction5() {
 }
 letFunction5();
 console.log('====================');
+// const variable
+console.log('Const variable:');
+// 因为也是用 var 实现的, 所以都不会按 es6 规则报错
+console.log('before define:', constVariable);
+const constVariable = 3.1415926;
+console.log('after define:', constVariable);
+// 编译报错
+//constVariable = 3.14;
+// 编译报错
+//const constVariable = 22222;
+console.log('====================');
+const constArray = [];
+constArray.push(1);
+console.log('after push:', constArray);
+// 会报错
+//constArray = ['Dave'];
+console.log('====================');
+// babel 编译出来的模块是 commonjs 模式的, 需要用 webpack
+//import * as constants from './chapter_02.let_const.constants.js';
+//import {A, B} from './chapter_02.let_const.test1.js';
+//console.log(A);
+//console.log(B);
+// global scope
+console.log('====================');
+// 这里 traceur 的行为和 babel 非常不一样
+// 虽然他们都是用 var 实现的 let, 但因为在线的 traceur 会有一层外包的函数
+// 因而在 window 对象下并不能取到 var 声明的值
+// 而 babel 是直接把声明变量放在了全局下, 因而 var 和 let 都可以在 window 对象上取到
+console.log('Global scope:');
+var globalVar = 1;
+console.log('window.globalVar:', window.globalVar);
+let globalLet = 2;
+console.log('window.globalLet:', window.globalLet);
