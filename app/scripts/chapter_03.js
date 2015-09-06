@@ -84,5 +84,15 @@ let { foo: func1Foo, bar: func1Bar } = func1();
 console.log('func1Foo:', func1Foo, 'func1Bar:', func1Bar);
 console.log('====================');
 console.log('unordered parameters (config?):');
-let func2 = () => {};
+let func2 = ({ x = 0, y = 0, z = 0 } = {}) => x + y + z;
+console.log(func2({ z: 3, x: 10 }));
 console.log('====================');
+console.log('destruction with for-of');
+let desMap = new Map();
+desMap.set('first', 'hello');
+desMap.set('second', 'world');
+for (let [key, value] of desMap) {
+    console.log(key, 'is', value);
+}
+console.log('====================');
+
